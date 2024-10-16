@@ -11,13 +11,13 @@ const bodyParser = require('body-parser');
 dotenv.config();
 
 const firebaseConfig = {
-    apiKey: process.env.REACT_APP_AIRTABLE_API_KEY,
-    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-    databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.REACT_APP_FIREBASE_APP_ID
+    apiKey: process.env.AIRTABLE_API_KEY,
+    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+    databaseURL: process.env.FIREBASE_DATABASE_URL,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.FIREBASE_APP_ID
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -79,43 +79,43 @@ app.get('/get-data', (req, res) => {
 
     switch (setTable) {
         case "table_one":
-            tableAirtable = process.env.REACT_APP_AIRTABLE_ALIVE_TABLE_1
+            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_1
             break;
         case "table_two":
-            tableAirtable = process.env.REACT_APP_AIRTABLE_ALIVE_TABLE_2
+            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_2
             break;
         case "table_three":
-            tableAirtable = process.env.REACT_APP_AIRTABLE_ALIVE_TABLE_3
+            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_3
             break;
         case "table_four":
-            tableAirtable = process.env.REACT_APP_AIRTABLE_ALIVE_TABLE_4
+            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_4
             break;
         case "table_five":
-            tableAirtable = process.env.REACT_APP_AIRTABLE_ALIVE_TABLE_5
+            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_5
             break;
         case "table_six":
-            tableAirtable = process.env.REACT_APP_AIRTABLE_ALIVE_TABLE_6
+            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_6
             break;
         case "table_seven":
-            tableAirtable = process.env.REACT_APP_AIRTABLE_ALIVE_TABLE_7
+            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_7
             break;
         case "table_eight":
-            tableAirtable = process.env.REACT_APP_AIRTABLE_ALIVE_TABLE_8
+            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_8
             break;
         case "table_nine":
-            tableAirtable = process.env.REACT_APP_AIRTABLE_ALIVE_TABLE_9
+            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_9
             break;
         case "table_ten":
-            tableAirtable = process.env.REACT_APP_AIRTABLE_ALIVE_TABLE_10
+            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_10
             break;
         case "table_eleventh":
-            tableAirtable = process.env.REACT_APP_AIRTABLE_ALIVE_TABLE_11
+            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_11
             break;
         case "table_twelfth":
-            tableAirtable = process.env.REACT_APP_AIRTABLE_ALIVE_TABLE_12
+            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_12
             break;
         default:
-            tableAirtable = process.env.REACT_APP_AIRTABLE_ALIVE_TABLE_1
+            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_1
     }
 
     let Airtable = async (base, table) => {
@@ -135,7 +135,7 @@ app.get('/get-data', (req, res) => {
                 const response = await fetch(fetchUrl, {
                     method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${process.env.REACT_APP_AIRTABLE_API_KEY}`,
+                        'Authorization': `Bearer ${process.env.AIRTABLE_API_KEY}`,
                         'Content-Type': 'application/json',
                     },
                 });
@@ -162,7 +162,7 @@ app.get('/get-data', (req, res) => {
         }
     }
 
-    const data = Airtable(process.env.REACT_APP_AIRTABLE_ALIVE_BASE, tableAirtable)
+    const data = Airtable(process.env.AIRTABLE_ALIVE_BASE, tableAirtable)
 
     data.then((result) =>{
         for(let rows in result){
@@ -170,19 +170,19 @@ app.get('/get-data', (req, res) => {
             let image_name;
             switch(temp_data['bucket'].split('/')[1]){
                 case "":
-                    image_name = process.env.REACT_APP_AWS_BUCKET_LINK + "/" + temp_data['item']
+                    image_name = process.env.AWS_BUCKET_LINK + "/" + temp_data['item']
                     break;
                 case "Study2+resized+for+online":
-                    image_name = process.env.REACT_APP_AWS_BUCKET_TWO_LINK + "/" + temp_data['item']
+                    image_name = process.env.AWS_BUCKET_TWO_LINK + "/" + temp_data['item']
                     break;
                 default:
-                    image_name = process.env.REACT_APP_AWS_BUCKET_LINK + "/" + temp_data['item']
+                    image_name = process.env.AWS_BUCKET_LINK + "/" + temp_data['item']
             }
             images.push(image_name)
             temp_data['url'] = image_name
             test_stimuli.push(result[rows].fields)
         }
-        images.push(process.env.REACT_APP_AWS_BUCKET_LINK + "mask1.jpg")
+        images.push(process.env.AWS_BUCKET_LINK + "mask1.jpg")
     }).then((dataset) =>{
         res.status(200).json({
             test_stimuli: test_stimuli,
