@@ -36,7 +36,6 @@
             const jsPsych = initJsPsych({
                 override_safe_mode: true,
                 on_finish: function() {
-                    jsPsych.data.displayData();
                     sendResults(jsPsych.data.get()['trials']);
                 }
             });
