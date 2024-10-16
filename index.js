@@ -1,6 +1,6 @@
 const express = require('express');
 const { initializeApp } = require('firebase/app');
-const { getDatabase, ref, child, get, update } = require('firebase/database');
+const { getDatabase, ref, child, get, update, set } = require('firebase/database');
 const dotenv = require('dotenv');
 const fetch = require('node-fetch');
 const cors = require('cors');
@@ -193,10 +193,29 @@ app.get('/get-data', (req, res) => {
 
 app.post('/submit-results', (req, res) => {
     const results = req.body; // Get results from the request body
-    console.log('Received results:', results); // Log results to the console
+    // Helper function to remove undefined values
+    function replaceNullWithString(obj) {
+        return JSON.parse(JSON.stringify(obj, (key, value) => {
+            if (value === null) {
+                return "null";  // Replace null with the string "null"
+            }
+            return value;  // Keep the other values unchanged
+        }));
+    }
 
-    // Here you can process or save the results as needed
-    // For now, just send a success response
+    // Clean the data to remove undefined values
+    const cleanedData = replaceNullWithString(results);
+
+    // Now save the cleaned data to Firebase
+    const randomId = "user-" + Date.now().toString() + "-" + Math.floor(Math.random() * 1000000).toString();
+    set(ref(database, 'users/' + randomId), cleanedData)
+        .then(() => {
+            console.log('Data saved successfully.');
+        })
+        .catch((error) => {
+            console.error('Error saving data: ', error);
+        });
+
     res.status(200).json({ message: 'Results received successfully!' });
 });
 
