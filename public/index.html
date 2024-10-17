@@ -144,6 +144,15 @@
 
             timeline.push(comment_block);
 
+            const end_block = {
+                type: jsPsychHtmlKeyboardResponse,
+                stimulus: '<p>Thanks for participating!</p>' +
+                    '<p><a href="https://app.prolific.co/submissions/complete?cc=C577AN4C">Click here to return to Prolific and complete the study</a>.</p>',
+                choices: "NO_KEYS",
+            };
+
+            timeline.push(end_block)
+
             jsPsych.run({timeline: timeline, preload_images: images})
         }
 
