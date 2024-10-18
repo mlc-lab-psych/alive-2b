@@ -75,8 +75,15 @@
                 version:"",
                 stimulus: "<p>In this experiment, you will see a single image on the screen.</p>" +
                     "<p>Your task is to decide whether the entity in this image is <strong>alive</strong> or not.</p>" +
-                    "<p>Press the letter A if the entity is <strong>alive</strong>, and N if it is not.</p>" +
-                    "<p>There will be 140 images. Be as accurate and fast as you can.</p>" +
+                    "<p>Press the letter A on the keyboard if you think the entity is <strong>alive</strong>.</p>" +
+                    "<p>Press the letter N on the keyboard if you think the entity is <strong>not alive</strong>.</p>" +
+                    "<br>" +
+                    "<p>Some images contain more than one thing, technically speaking. Focus on the main thing in each image.</p>" +
+                    "<p>Be as accurate and as fast as you can. You will have at most 1 second to respond.</p>" +
+                    "<p>Between each image, you will see a small cross and a picture of static. Look at these images but do not respond to them.</p>" +
+                    "<br>" +
+                    "<p>You will see 140 images.</p>" +
+                    "<br>"+ "<br>" +
                     "<p>Press any key to begin.</p>",
                 post_trial_gap: 2000,
             };
@@ -147,11 +154,10 @@
             const end_block = {
                 type: jsPsychHtmlKeyboardResponse,
                 stimulus: '<p>Thanks for participating!</p>' +
-                    '<p><a href="https://app.prolific.co/submissions/complete?cc=C577AN4C">Click here to return to Prolific and complete the study</a>.</p>',
+                    '<p><a href="https://app.prolific.com/submissions/complete?cc=CYIS3IDD">Click here to return to Prolific and complete the study</a>.</p>',
                 choices: "NO_KEYS",
             };
-
-            timeline.push(end_block)
+            timeline.push(end_block);
 
             jsPsych.run({timeline: timeline, preload_images: images})
         }
