@@ -219,6 +219,10 @@ app.post('/submit-results', (req, res) => {
     res.status(200).json({ message: 'Results received successfully!' });
 });
 
+app.get('*', (req, res) => {
+    res.redirect('/');
+});
+
 // Set the app to listen on port 3000
 const PORT = 3000;
 app.listen(PORT, () => {
