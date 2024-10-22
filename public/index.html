@@ -36,7 +36,7 @@
             const jsPsych = initJsPsych();
 
             function getParamFromURL(name) {
-                name = name.replace(/\[/, "\\[").replace(/\]/, "\\]");
+                name = name.replace(/\[/, "\\[").replace(/]/, "\\]");
                 let regex = new RegExp("[?&]" + name + "=([^&#]*)");
                 let results = regex.exec(window.location.href);
                 return results ? decodeURIComponent(results[1]) : "";
@@ -112,7 +112,9 @@
                     test_part: jsPsych.timelineVariable('test_part'),
                     url: jsPsych.timelineVariable('url'),
                     category: jsPsych.timelineVariable('category'),
+                    subcategory: jsPsych.timelineVariable('subcategory'),
                     correct_response: jsPsych.timelineVariable('correct_response'),
+                    order: jsPsych.timelineVariable('order')
                 },
                 on_finish: function(data) {
                     data.correct = jsPsych.pluginAPI.compareKeys(data.correct_response, data.response);
