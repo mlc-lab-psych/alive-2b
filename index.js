@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
 
 
 // Define a route
-app.get('/get-data', (req, res) => {
+app.get('/get-data', async (req, res) => {
 
     let images = [];
     let test_stimuli = [];
@@ -53,7 +53,7 @@ app.get('/get-data', (req, res) => {
                 const countData = snapshot.val();
 
                 function lowestValueAndKey(obj) {
-                    let [lowestItems] = Object.entries(obj).sort(([ ,v1], [ ,v2]) => v1 - v2);
+                    let [lowestItems] = Object.entries(obj).sort(([, v1], [, v2]) => v1 - v2);
                     return lowestItems[0];
                 }
 
@@ -61,7 +61,7 @@ app.get('/get-data', (req, res) => {
 
                 const updates = {};
                 updates[`count/${key}`] = countData[key] + 1
-                await update(dbRef,updates)
+                await update(dbRef, updates)
 
                 return key
 
@@ -74,7 +74,7 @@ app.get('/get-data', (req, res) => {
         }
     }
 
-    const setTable = processCountData()
+    const setTable = await processCountData()
     let tableAirtable;
 
     switch (setTable) {
@@ -164,11 +164,11 @@ app.get('/get-data', (req, res) => {
 
     const data = Airtable(process.env.AIRTABLE_ALIVE_BASE, tableAirtable)
 
-    data.then((result) =>{
-        for(let rows in result){
+    data.then((result) => {
+        for (let rows in result) {
             let temp_data = result[rows].fields
             let image_name;
-            switch(temp_data['bucket'].split('/')[1]){
+            switch (temp_data['bucket'].split('/')[1]) {
                 case "":
                     image_name = process.env.AWS_BUCKET_LINK + "/" + temp_data['item']
                     break;
@@ -183,7 +183,7 @@ app.get('/get-data', (req, res) => {
             test_stimuli.push(result[rows].fields)
         }
         images.push(process.env.AWS_BUCKET_LINK + "mask1.jpg")
-    }).then((dataset) =>{
+    }).then((dataset) => {
         res.status(200).json({
             test_stimuli: test_stimuli,
             images: images
