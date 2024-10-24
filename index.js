@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
 
 
 // Define a route
-app.get('/get-data', async (req, res) => {
+app.get('/get-data', (req, res) => {
 
     let images = [];
     let test_stimuli = [];
@@ -53,7 +53,7 @@ app.get('/get-data', async (req, res) => {
                 const countData = snapshot.val();
 
                 function lowestValueAndKey(obj) {
-                    let [lowestItems] = Object.entries(obj).sort(([, v1], [, v2]) => v1 - v2);
+                    let [lowestItems] = Object.entries(obj).sort(([ ,v1], [ ,v2]) => v1 - v2);
                     return lowestItems[0];
                 }
 
@@ -61,7 +61,7 @@ app.get('/get-data', async (req, res) => {
 
                 const updates = {};
                 updates[`count/${key}`] = countData[key] + 1
-                await update(dbRef, updates)
+                await update(dbRef,updates)
 
                 return key
 
@@ -74,121 +74,124 @@ app.get('/get-data', async (req, res) => {
         }
     }
 
-    const setTable = await processCountData()
-    let tableAirtable;
 
-    switch (setTable) {
-        case "table_one":
-            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_1
-            break;
-        case "table_two":
-            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_2
-            break;
-        case "table_three":
-            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_3
-            break;
-        case "table_four":
-            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_4
-            break;
-        case "table_five":
-            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_5
-            break;
-        case "table_six":
-            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_6
-            break;
-        case "table_seven":
-            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_7
-            break;
-        case "table_eight":
-            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_8
-            break;
-        case "table_nine":
-            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_9
-            break;
-        case "table_ten":
-            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_10
-            break;
-        case "table_eleventh":
-            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_11
-            break;
-        case "table_twelfth":
-            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_12
-            break;
-        default:
-            tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_1
-    }
-
-    let Airtable = async (base, table) => {
-
-        const url = `https://api.airtable.com/v0/${base}/${table}`;
-        let allRecords = [];
-        let offset = null;
-
-        try {
-            do {
-                // Construct the URL with the offset if available
-                let fetchUrl = url;
-                if (offset) {
-                    fetchUrl += `?offset=${offset}`;
-                }
-
-                const response = await fetch(fetchUrl, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${process.env.AIRTABLE_API_KEY}`,
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.status} ${response.statusText}`);
-                }
-
-                const result = await response.json();
-
-                // Concatenate the current batch of records with the previous ones
-                allRecords = allRecords.concat(result.records);
-
-                // Set the offset for the next request, if available
-                offset = result.offset;
-
-            } while (offset);  // Keep looping until there's no more offset
-
-            return allRecords;  // Return all the records after fetching
-
-        } catch (error) {
-            console.log('Could not fetch data from Airtable.', error);
-            return [];
+    const setTable = processCountData().then((results) =>{
+        let tableAirtable;
+        switch (results) {
+            case "table_one":
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_1
+                break;
+            case "table_two":
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_2
+                break;
+            case "table_three":
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_3
+                break;
+            case "table_four":
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_4
+                break;
+            case "table_five":
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_5
+                break;
+            case "table_six":
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_6
+                break;
+            case "table_seven":
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_7
+                break;
+            case "table_eight":
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_8
+                break;
+            case "table_nine":
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_9
+                break;
+            case "table_ten":
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_10
+                break;
+            case "table_eleventh":
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_11
+                break;
+            case "table_twelfth":
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_12
+                break;
+            default:
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_1
         }
-    }
+        return tableAirtable
+    }).then((tableAirtable)=>{
+        let Airtable = async (base, table) => {
 
-    const data = Airtable(process.env.AIRTABLE_ALIVE_BASE, tableAirtable)
+            const url = `https://api.airtable.com/v0/${base}/${table}`;
+            let allRecords = [];
+            let offset = null;
 
-    data.then((result) => {
-        for (let rows in result) {
-            let temp_data = result[rows].fields
-            let image_name;
-            switch (temp_data['bucket'].split('/')[1]) {
-                case "":
-                    image_name = process.env.AWS_BUCKET_LINK + "/" + temp_data['item']
-                    break;
-                case "Study2+resized+for+online":
-                    image_name = process.env.AWS_BUCKET_TWO_LINK + "/" + temp_data['item']
-                    break;
-                default:
-                    image_name = process.env.AWS_BUCKET_LINK + "/" + temp_data['item']
+            try {
+                do {
+                    // Construct the URL with the offset if available
+                    let fetchUrl = url;
+                    if (offset) {
+                        fetchUrl += `?offset=${offset}`;
+                    }
+
+                    const response = await fetch(fetchUrl, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${process.env.AIRTABLE_API_KEY}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Error: ${response.status} ${response.statusText}`);
+                    }
+
+                    const result = await response.json();
+
+                    // Concatenate the current batch of records with the previous ones
+                    allRecords = allRecords.concat(result.records);
+
+                    // Set the offset for the next request, if available
+                    offset = result.offset;
+
+                } while (offset);  // Keep looping until there's no more offset
+
+                return allRecords;  // Return all the records after fetching
+
+            } catch (error) {
+                console.log('Could not fetch data from Airtable.', error);
+                return [];
             }
-            images.push(image_name)
-            temp_data['url'] = image_name
-            test_stimuli.push(result[rows].fields)
         }
-        images.push(process.env.AWS_BUCKET_LINK + "mask1.jpg")
-    }).then((dataset) => {
-        res.status(200).json({
-            test_stimuli: test_stimuli,
-            images: images
+
+        const data = Airtable(process.env.AIRTABLE_ALIVE_BASE, tableAirtable)
+
+        data.then((result) =>{
+            for(let rows in result){
+                let temp_data = result[rows].fields
+                let image_name;
+                switch(temp_data['bucket'].split('/')[1]){
+                    case "":
+                        image_name = process.env.AWS_BUCKET_LINK + "/" + temp_data['item']
+                        break;
+                    case "Study2+resized+for+online":
+                        image_name = process.env.AWS_BUCKET_TWO_LINK + "/" + temp_data['item']
+                        break;
+                    default:
+                        image_name = process.env.AWS_BUCKET_LINK + "/" + temp_data['item']
+                }
+                images.push(image_name)
+                temp_data['url'] = image_name
+                test_stimuli.push(result[rows].fields)
+            }
+            images.push(process.env.AWS_BUCKET_LINK + "mask1.jpg")
+        }).then((dataset) =>{
+            res.status(200).json({
+                test_stimuli: test_stimuli,
+                images: images
+            })
         })
     })
+
 });
 
 app.post('/submit-results', (req, res) => {
