@@ -15,19 +15,29 @@
         let test_stimuli;
         let images;
 
+        async function preload_images(data){
+            let preloadedImages = []
+            data.forEach(img=>{
+                let ogImg = new Image();
+                ogImg.src = img;
+                preloadedImages.push(ogImg)
+            })
+            return preloadedImages
+        }
+
         async function fetchData() {
             try {
                 const response = await fetch('https://alive-experiment.vercel.app/get-data'); // Make the GET request
-                // const response = await fetch('http://localhost:3000/get-data'); // Make the GET request
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json(); // Parse the JSON response
                 test_stimuli = data['test_stimuli']
                 images = data['images']
-
-                initializeJsPsych();
-
+                await preload_images(images).then((result)=>{
+                    images = result
+                    initializeJsPsych()
+                })
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
