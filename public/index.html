@@ -36,8 +36,9 @@
                 images = data['images']
                 await preload_images(images).then((result)=>{
                     images = result
-                    initializeJsPsych()
                 })
+
+                initializeJsPsych()
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -172,6 +173,7 @@
         }
 
         async function sendResults(results) {
+            console.log(results)
             try {
                 const response = await fetch('https://alive-experiment.vercel.app/submit-results', {
                     method: 'POST',
