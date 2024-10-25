@@ -211,7 +211,7 @@ app.post('/submit-results', (req, res) => {
 
     // Now save the cleaned data to Firebase
     const randomId = "user-" + Date.now().toString() + "-" + Math.floor(Math.random() * 1000000).toString();
-    set(ref(database, 'users/' + randomId), cleanedData)
+    set(ref(database, 'users-new/' + randomId), cleanedData)
         .then(() => {
             console.log('Data saved successfully.');
         })
