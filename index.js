@@ -194,7 +194,7 @@ app.get('/get-data', (req, res) => {
 
 });
 
-app.post('/submit-results', (req, res) => {
+app.post('/submit-results', async (req, res) => {
     const results = req.body; // Get results from the request body
     // Helper function to remove undefined values
     function replaceNullWithString(obj) {
@@ -211,15 +211,16 @@ app.post('/submit-results', (req, res) => {
 
     // Now save the cleaned data to Firebase
     const randomId = "user-" + Date.now().toString() + "-" + Math.floor(Math.random() * 1000000).toString();
-    set(ref(database, 'users-new/' + randomId), cleanedData)
-        .then(() => {
-            console.log('Data saved successfully.');
-        })
-        .catch((error) => {
-            console.error('Error saving data: ', error);
-        });
-
-    res.status(200).json({ message: 'Results received successfully!' });
+    try{
+        await set(ref(database, 'users-new/' + randomId), cleanedData)
+            .then(() => {
+                console.log('Data saved successfully.');
+            })
+        res.status(200).json({message: 'Results received successfully!'});
+    } catch(error){
+        console.error('Error saving data: ', error);
+        res.status(500).json({ message: 'Error saving results.' });
+    }
 });
 
 app.get('*', (req, res) => {
