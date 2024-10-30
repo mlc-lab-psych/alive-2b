@@ -78,45 +78,52 @@ app.get('/get-data', (req, res) => {
     const setTable = processCountData().then((results) =>{
         let tableAirtable;
         switch (results) {
-            case "table_one":
-                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_1
-                break;
             case "table_two":
                 tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_2
                 break;
-            case "table_three":
-                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_3
-                break;
-            case "table_four":
-                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_4
-                break;
-            case "table_five":
-                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_5
-                break;
-            case "table_six":
-                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_6
-                break;
-            case "table_seven":
-                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_7
-                break;
-            case "table_eight":
-                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_8
-                break;
-            case "table_nine":
-                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_9
-                break;
-            case "table_ten":
-                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_10
-                break;
-            case "table_eleventh":
-                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_11
-                break;
-            case "table_twelfth":
-                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_12
-                break;
             default:
-                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_1
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_2
         }
+        // switch (results) {
+        //     case "table_one":
+        //         tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_1
+        //         break;
+        //     case "table_two":
+        //         tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_2
+        //         break;
+        //     case "table_three":
+        //         tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_3
+        //         break;
+        //     case "table_four":
+        //         tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_4
+        //         break;
+        //     case "table_five":
+        //         tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_5
+        //         break;
+        //     case "table_six":
+        //         tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_6
+        //         break;
+        //     case "table_seven":
+        //         tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_7
+        //         break;
+        //     case "table_eight":
+        //         tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_8
+        //         break;
+        //     case "table_nine":
+        //         tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_9
+        //         break;
+        //     case "table_ten":
+        //         tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_10
+        //         break;
+        //     case "table_eleventh":
+        //         tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_11
+        //         break;
+        //     case "table_twelfth":
+        //         tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_12
+        //         break;
+        //     default:
+        //         tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_1
+        // }
         return tableAirtable
     }).then((tableAirtable)=>{
         let Airtable = async (base, table) => {
