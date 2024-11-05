@@ -27,8 +27,8 @@
 
         async function fetchData() {
             try {
-                // const response = await fetch('https://alive-experiment.vercel.app/get-data'); // Make the GET request
-                const response = await fetch('http://localhost:3000/get-data'); // Make the GET request
+                const response = await fetch('https://alive-experiment.vercel.app/get-data'); // Make the GET request
+                // const response = await fetch('http://localhost:3000/get-data'); // Make the GET request
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -174,8 +174,8 @@
 
         async function sendResults(results) {
             try {
-                const response = await fetch('http://localhost:3000/submit-results', {
-                // const response = await fetch('https://alive-experiment.vercel.app/submit-results', {
+                // const response = await fetch('http://localhost:3000/submit-results', {
+                const response = await fetch('https://alive-experiment.vercel.app/submit-results', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

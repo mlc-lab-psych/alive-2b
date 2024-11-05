@@ -124,6 +124,7 @@ app.get('/get-data', (req, res) => {
         //     default:
         //         tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_1
         // }
+        console.log(tableAirtable)
         return tableAirtable
     }).then((tableAirtable)=>{
         let Airtable = async (base, table) => {
