@@ -52,7 +52,13 @@
                 name = name.replace(/\[/, "\\[").replace(/]/, "\\]");
                 let regex = new RegExp("[?&]" + name + "=([^&#]*)");
                 let results = regex.exec(window.location.href);
-                return results ? decodeURIComponent(results[1]) : "";
+                try{
+                    let decoded = decodeURIComponent(results[1])
+                    return results ? decoded : "";
+                }
+                catch(error){
+                    return ""
+                }
             }
 
             let subject_id = "alive_images_" + Math.floor(Math.random() * 1000000);
