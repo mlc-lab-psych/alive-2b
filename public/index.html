@@ -85,7 +85,79 @@
 
             timeline.push(welcome_block)
 
+            const consent ={
+                type: jsPsychSurveyHtmlForm,
+                preamble: '',
+                html: `
+                    <style>
+                    .jspsych-content{
+                    text-align: left;
+                    }
+                    </style>
+                    <div style="max-width: 1200px">
+                            <label style="text-align: left !important;">The research study you are about to do is sponsored by Rochester Institute of Technology (RIT). It is part of protocol #02111723. The task you are asked to do involves making simple responses to images, words, and sentences. For example, you may be asked to rate a pair of images on their similarity or to indicate how true you think a given sentence is. You may also be asked to complete a questionnaire about your background and your attitudes and interests. More detailed instructions for this specific task will be provided on the next screen.
+
+<br><br>This task has no direct benefits. We do not anticipate any psychosocial, social, or legal risks. Participants may become fatigued or frustrated due to the length of the study. The responses you submit as part of this task will be stored on a secure server and accessible only to researchers who have been approved by RIT. Processed data with all identifiers removed could be used for future research studies or distributed to another investigator for future research studies without additional informed consent from the subject or a legally authorized representative.
+
+<br><br>You are free to decline to participate, to end participation at any time for any reason, or to refuse to answer any individual question without penalty or loss of earned compensation. We will not retain data from partial responses. If you would like to withdraw your data after participating, you may send an email to lrrgsh@rit.edu or complete this form which will allow you to make a request anonymously.
+
+<br><br>If you have any questions or concerns about this task, please contact the principal investigator: Prof. Lilia Rissman at lrrgsh@rit.edu.
+
+<br><br>If you are not satisfied with response of the research team, have more questions, or want to talk with someone about your rights as a research participant, you should contact RIT’s Human Subjects Research Office at 585-475-7673, hmfsrs@rit.edu.
+
+<br><br>If you agree to participate, please click "I agree" below. If not, please close your browser window now.</label><br><br>
+                            <input type="checkbox" id="agree" name="consent" value="Agreed" required>
+                            <label for="agree">I agree</label><br><br>
+                    </div>
+                `
+            }
+
+            timeline.push(consent)
+
             const demographics = {
+                type: jsPsychSurveyHtmlForm,
+                preamble: '<h2>Demographic Information</h2>',
+                html: `
+                        <div class="container">
+                            <label for="age" style="font-weight: bold">Age:</label><br>
+                            <input type="text" id="age" name="age" required><br><br>
+
+                            <label style="font-weight: bold">Gender:</label><br>
+                            <input type="radio" id="male" name="gender" value="Male" required>
+                            <label for="male">Male</label><br>
+                            <input type="radio" id="female" name="gender" value="Female" required>
+                            <label for="female">Female</label><br>
+                            <input type="radio" id="third" name="gender" value="Third gender" required>
+                            <label for="third">Non-binary/third gender</label><br>
+                            <input type="radio" id="other" name="gender" value="Prefer not to say" required>
+                            <label for="other">Prefer not to say</label><br><br><br>
+
+                            <label style="font-weight: bold">Race/Ethnicity (Select all that apply):</label><br>
+                            <input type="checkbox" id="race_white" name="race_ethnicity" value="White">
+                            <label for="race_white">White</label><br>
+                            <input type="checkbox" id="race_black" name="race_ethnicity" value="Black or African American">
+                            <label for="race_black">Black or African American</label><br>
+                            <input type="checkbox" id="race_asian" name="race_ethnicity" value="Asian">
+                            <label for="race_asian">Asian</label><br>
+                            <input type="checkbox" id="race_native" name="race_ethnicity" value="Native American or Alaska Native">
+                            <label for="race_native">Native American or Alaska Native</label><br>
+                            <input type="checkbox" id="race_hispanic" name="race_ethnicity" value="Hispanic or Latino">
+                            <label for="race_hispanic">Hispanic or Latino</label><br>
+                            <input type="checkbox" id="race_pacific" name="race_ethnicity" value="Native Hawaiian or Other Pacific Islander">
+                            <label for="race_pacific">Native Hawaiian or Other Pacific Islander</label><br>
+                            <input type="checkbox" id="race_other" name="race_ethnicity" value="Other">
+                            <label for="race_other">Other</label><br><br>
+
+                            <label style="font-weight: bold" for="nationality">Nationality:</label><br>
+                            <input type="text" id="nationality" name="nationality" required><br><br>
+                        </div>
+                      `,
+                button_label: 'Continue'
+            }
+
+            timeline.push(demographics)
+
+            const demographics_two = {
                 type: jsPsychSurveyHtmlForm,
                 preamble: '<h2>Demographic Information</h2>',
                 html: `
@@ -105,51 +177,15 @@
 
                         <div class="container">
                           <div class="column">
-                            <label for="age" style="font-weight: bold">Age:</label><br>
-                            <input type="text" id="age" name="age" required><br><br>
-
-                            <label style="font-weight: bold">Gender:</label><br>
-                            <input type="radio" id="male" name="gender" value="Male" required>
-                            <label for="male">Male</label>
-                            <input type="radio" id="female" name="gender" value="Female" required>
-                            <label for="female">Female</label>
-                            <input type="radio" id="third" name="gender" value="Third gender" required>
-                            <label for="third">Non-binary/third gender</label>
-                            <input type="radio" id="other" name="gender" value="Prefer not to say" required>
-                            <label for="other">Prefer not to say</label><br><br><br>
-
-                            <label style="font-weight: bold">Race/Ethnicity (Select all that apply):</label><br>
-                            <input type="checkbox" id="race_white" name="race_ethnicity" value="White">
-                            <label for="race_white">White</label>
-                            <input type="checkbox" id="race_black" name="race_ethnicity" value="Black or African American">
-                            <label for="race_black">Black or African American</label>
-                            <input type="checkbox" id="race_asian" name="race_ethnicity" value="Asian">
-                            <label for="race_asian">Asian</label><br>
-                            <input type="checkbox" id="race_native" name="race_ethnicity" value="Native American or Alaska Native">
-                            <label for="race_native">Native American or Alaska Native</label>
-                            <input type="checkbox" id="race_hispanic" name="race_ethnicity" value="Hispanic or Latino">
-                            <label for="race_hispanic">Hispanic or Latino</label><br>
-                            <input type="checkbox" id="race_pacific" name="race_ethnicity" value="Native Hawaiian or Other Pacific Islander">
-                            <label for="race_pacific">Native Hawaiian or Other Pacific Islander</label>
-                            <input type="checkbox" id="race_other" name="race_ethnicity" value="Other">
-                            <label for="race_other">Other</label><br><br>
-
-                            <label style="font-weight: bold" for="nationality">Nationality:</label><br>
-                            <input type="text" id="nationality" name="nationality" required><br><br>
-                          </div>
-
-                          <div class="column">
-
-
                             <label style="font-weight: bold">Level of Education:</label><br>
                             <input type="radio" id="high_school" name="education" value="High School Degree/GED" required>
-                            <label for="high_school">High School Degree/GED</label>
+                            <label for="high_school">High School Degree/GED</label><br>
                             <input type="radio" id="some_college" name="education" value="Some College" required>
-                            <label for="bachelor">Some College</label>
+                            <label for="bachelor">Some College</label><br>
                             <input type="radio" id="college_degree" name="education" value="College Degree" required>
                             <label for="master">College Degree</label><br>
                             <input type="radio" id="some_grad" name="education" value="Some Graduate Degree" required>
-                            <label for="doctorate">Some Graduate Degree</label>
+                            <label for="doctorate">Some Graduate Degree</label><br>
                             <input type="radio" id="grad_degree" name="education" value="Graduate Degree" required>
                             <label for="other_edu">Graduate Degree</label><br><br>
 
@@ -167,7 +203,7 @@
                 button_label: 'Continue'
             }
 
-            timeline.push(demographics)
+            timeline.push(demographics_two)
 
             const instructions = {
                 type: jsPsychHtmlKeyboardResponse,
