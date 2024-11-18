@@ -79,11 +79,11 @@ app.get('/get-data', (req, res) => {
     const setTable = processCountData().then((results) =>{
         let tableAirtable;
         switch (results) {
-            case "table_two":
-                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_2
+            case "table_one":
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_1
                 break;
             default:
-                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_2
+                tableAirtable = process.env.AIRTABLE_ALIVE_TABLE_1
         }
         // switch (results) {
         //     case "table_one":
